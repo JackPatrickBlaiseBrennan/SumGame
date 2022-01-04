@@ -1,15 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { useState } from 'react';
+import PropTypes from 'prop-types'
 
-export default function Game() {
-    const[target, setTarget] = useState(Math.floor(40 * Math.random()));
+function Game({options}) {
+    const [randomNumbers] = useState(Array.from({length:options}).map(() => 1 + Math.floor(10 * Math.random())));
+    const[target] = useState(randomNumbers.slice(0, options-2).reduce((partial_sum, current) => partial_sum + current, 0));
   return (
     <View style={styles.root}>
         <View style={styles.top}>
-            <Text style={styles.result}>{target}</Text>
+            <Text style={styles.numberBox}>{target}</Text>
         </View>
-        <View style={styles.bottom}/>
+        <View style={styles.bottom}>
+            {randomNumbers.map((number, index) => <Text style={styles.numberBox} key={index}>{number}</Text>)}    
+        </View> 
       <StatusBar style="auto" />
     </View>
   );
@@ -31,14 +35,23 @@ const styles = StyleSheet.create({
   },
   bottom:{
     flex:2,
-    ...defaultContainerStyle
+    justifyContent: 'center',
+    flexWrap: "wrap",
+    flexDirection: "row",
   },
-  result:{
+  numberBox:{
     borderColor: 'black',
     borderWidth: 1,
     padding: 10,
     paddingLeft: 50,
     paddingRight: 50,
     fontSize: 50,
+    margin: 15,
   },
 });
+
+Game.propTypes = {
+    options: PropTypes.number.isRequired
+}
+
+export default Game
