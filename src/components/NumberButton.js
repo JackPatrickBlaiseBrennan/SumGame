@@ -1,18 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, TouchableOpacity, Text,} from 'react-native';
-import { useReducer, useState } from 'react';
 import PropTypes from 'prop-types'
 
-function NumberButton({number, onButtonPress, currentSum}) {
+function NumberButton({dataKey, number, onButtonPress, isDisabled}) {
+
     const handlePress = () => {
-        onButtonPress(number + currentSum);
-        
+      if(!isDisabled) onButtonPress(number, dataKey);
     }
+
   return (
     <TouchableOpacity onPress={handlePress}>
-        <Text style={styles.numberBox}>{number}</Text>
+        <Text style={[styles.numberBox,(isDisabled && styles.isDisabled)]}>{number}</Text>
     </TouchableOpacity>
   );
+
 }
 
 const defaultContainerStyle = {
@@ -30,10 +30,16 @@ const styles = StyleSheet.create({
     fontSize: 50,
     margin: 15,
   },
+  isDisabled:{
+    opacity: 0.3,
+  },
 });
 
 NumberButton.propTypes = {
-    number: PropTypes.number.isRequired
+  dataKey: PropTypes.number.isRequired,
+  number: PropTypes.number.isRequired,
+  onButtonPress: PropTypes.func.isRequired,
+  isDisabled: PropTypes.bool.isRequired,
 }
 
 export default NumberButton
