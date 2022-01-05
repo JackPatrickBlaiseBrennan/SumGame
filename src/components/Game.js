@@ -1,9 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import PropTypes from 'prop-types'
+import NumberButton from './NumberButton';
 
 function Game({options}) {
+    const [currSum, updateSum] = useState(0);
+    useEffect(()=>{
+        if(currSum == target){
+            console.log("Win");
+        };
+    });
     const [randomNumbers] = useState(Array.from({length:options}).map(() => 1 + Math.floor(10 * Math.random())));
     const[target] = useState(randomNumbers.slice(0, options-2).reduce((partial_sum, current) => partial_sum + current, 0));
   return (
@@ -12,7 +19,7 @@ function Game({options}) {
             <Text style={styles.numberBox}>{target}</Text>
         </View>
         <View style={styles.bottom}>
-            {randomNumbers.map((number, index) => <Text style={styles.numberBox} key={index}>{number}</Text>)}    
+            {randomNumbers.map((number, index) => <NumberButton key={index} number={number} onButtonPress={updateSum} currentSum={currSum}/>)}    
         </View> 
       <StatusBar style="auto" />
     </View>
