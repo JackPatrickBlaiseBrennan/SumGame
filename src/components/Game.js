@@ -4,12 +4,14 @@ import React, { useReducer, useState } from 'react';
 import PropTypes from 'prop-types'
 import NumberButton from './NumberButton';
 import useEffectPostMount from './useEffectPostMount';
+import shuffle from 'lodash.shuffle';
 
 
 function Game({options}) {
   React.useEffect(() => {
     //runs when component mounted
     intervalId = setInterval(() => updateSeconds(), 1000);
+    shuffleNumbers(shuffle(randomNumbers));
     return () => {
       //runs when unmounted
       clearInterval(intervalId);
@@ -29,9 +31,8 @@ function Game({options}) {
     });
     const [gameStatus, setGameStatus] = useState('PLAYING');
     const [selectedNumbers, updateSelected] = useState([]);
-    const [randomNumbers] = useState(Array.from({length:options}).map(() => 1 + Math.floor(10 * Math.random())));
+    const [randomNumbers, shuffleNumbers] = useState(Array.from({length:options}).map(() => 1 + Math.floor(10 * Math.random())));
     const[target] = useState(randomNumbers.slice(0, options-2).reduce((partial_sum, current) => partial_sum + current, 0));
-    
     const [remainingSeconds, updateSeconds] = useReducer(
       updateTimer
     , 10);
