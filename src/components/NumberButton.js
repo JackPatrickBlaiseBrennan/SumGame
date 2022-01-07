@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, Text,} from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, Dimensions} from 'react-native';
 import PropTypes from 'prop-types'
 
 function NumberButton({dataKey, number, onButtonPress, isDisabled}) {
@@ -14,7 +14,7 @@ function NumberButton({dataKey, number, onButtonPress, isDisabled}) {
   );
 
 }
-
+let width = Dimensions.get('window').width;
 const defaultContainerStyle = {
     backgroundColor: '#fff',
     alignItems: 'center',
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingLeft: 50,
     paddingRight: 50,
-    fontSize: 50,
+    fontSize: width/10,
     margin: 15,
   },
   isDisabled:{

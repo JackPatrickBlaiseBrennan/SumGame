@@ -1,12 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, Dimensions} from 'react-native';
 import React, { useReducer, useState } from 'react';
 import PropTypes from 'prop-types'
 import NumberButton from './NumberButton';
 import useEffectPostMount from './useEffectPostMount';
 import shuffle from 'lodash.shuffle';
 
-
+let width = Dimensions.get('window').width;
 function Game({options, playAgain, initalSeconds}) {
   React.useEffect(() => {
     //runs when component mounted
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   },
   numberBox:{
     ...numberBox,
-    fontSize: 50,
+    fontSize: width/8,
     marginBottom:0,
   },
   STATUS_PLAYING:{
@@ -130,8 +130,8 @@ const styles = StyleSheet.create({
   },
   timer:{
     ...numberBox,
-    fontSize: 25,
-
+    fontSize: width/16,
+    marginTop:0,
   },
 });
 
