@@ -1,12 +1,12 @@
 import { useReducer } from 'react';
-import Game from './Game';
+import GameModel from './GameModel';
 
 export default function App() {
 
-  const[appState, updateAppState] = useReducer(newGame, {gameId:0, initalSeconds:25});
+  const[appState, updateAppState] = useReducer(newGame, {gameId:0, initalSeconds:25, options: 6});
 
   function newGame(prevAppState, prevGameState){
-    let newAppState = {gameId:0, initalSeconds: 25};
+    let newAppState = {gameId:0, initalSeconds: 25, options: 6};
       if (prevGameState === 'WON' && prevAppState.initalSeconds > 9){
         newAppState.initalSeconds = prevAppState.initalSeconds - 5;
       }
@@ -16,7 +16,7 @@ export default function App() {
   }
   
   return (
-    <Game key={appState.gameId} playAgain={updateAppState} options={6} initalSeconds={appState.initalSeconds}/>
+    <GameModel key={appState.gameId} playAgain={updateAppState} appState={appState}/>
   );
 }
 

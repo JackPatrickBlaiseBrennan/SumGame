@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 function NumberButton({dataKey, number, onButtonPress, isDisabled}) {
 
     const handlePress = () => {
-      if(!isDisabled) onButtonPress(number, dataKey);
+      if(!isDisabled) onButtonPress({number:number, dataKey:dataKey});
     }
 
   return (
