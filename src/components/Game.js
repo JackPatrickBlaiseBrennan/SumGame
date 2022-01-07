@@ -7,7 +7,7 @@ import useEffectPostMount from './useEffectPostMount';
 import shuffle from 'lodash.shuffle';
 
 
-function Game({options, playAgain}) {
+function Game({options, playAgain, initalSeconds}) {
   React.useEffect(() => {
     //runs when component mounted
     intervalId = setInterval(() => updateSeconds(), 1000);
@@ -35,7 +35,7 @@ function Game({options, playAgain}) {
     const[target] = useState(randomNumbers.slice(0, options-2).reduce((partial_sum, current) => partial_sum + current, 0));
     const [remainingSeconds, updateSeconds] = useReducer(
       updateTimer
-    , 10);
+    , initalSeconds);
 
     function onNumberSelected (number, dataKey){
       updateSum(number + currSum);
@@ -59,7 +59,7 @@ function Game({options, playAgain}) {
         <View style={styles.top}>
             <Text style={[styles.numberBox, styles[`STATUS_${gameStatus}`]]}>{target}</Text>
         </View>
-        <View style={styles.bottom}>
+        <View style={styles.middle}>
             {randomNumbers.map((number, index) => 
               <NumberButton 
                 key={index}
@@ -70,20 +70,29 @@ function Game({options, playAgain}) {
               />
             )}    
         </View>
-        {gameStatus !== 'PLAYING' && (
-          <Button title='Play Again' onPress={playAgain}/>
-        )}
-        
-        <Text>{remainingSeconds}</Text>
+        <View style={styles.bottom}>
+          <Text style={styles.timer}>{remainingSeconds}</Text>
+          {gameStatus !== 'PLAYING' && (
+            <Button title='Play Again' onPress={() => playAgain(gameStatus)}/>
+          )}
+        </View>
       <StatusBar style='auto' />
     </View>
   );
 }
 
 const defaultContainerStyle = {
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  backgroundColor: '#fff',
+  alignItems: 'center',
+  justifyContent: 'center',
+}
+const numberBox = {
+  borderColor: 'black',
+  borderWidth: 1,
+  padding: 10,
+  paddingLeft: 50,
+  paddingRight: 50,
+  margin: 15,
 }
 const styles = StyleSheet.create({
   root: {
@@ -91,23 +100,24 @@ const styles = StyleSheet.create({
     ...defaultContainerStyle
   },
   top:{
-    flex: 1,
+    flex: 2.5,
     ...defaultContainerStyle
   },
-  bottom:{
-    flex:2,
+  middle:{
+    flex:5.5,
     justifyContent: 'center',
     flexWrap: 'wrap',
     flexDirection: 'row',
   },
+  bottom:{
+    ...defaultContainerStyle,
+    flex: 2,
+    justifyContent:'flex-start',
+  },
   numberBox:{
-    borderColor: 'black',
-    borderWidth: 1,
-    padding: 10,
-    paddingLeft: 50,
-    paddingRight: 50,
+    ...numberBox,
     fontSize: 50,
-    margin: 15,
+    marginBottom:0,
   },
   STATUS_PLAYING:{
     backgroundColor: '#fff',
@@ -117,6 +127,11 @@ const styles = StyleSheet.create({
   },
   STATUS_WON:{
     backgroundColor: 'green',
+  },
+  timer:{
+    ...numberBox,
+    fontSize: 25,
+
   },
 });
 
