@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import React, { useReducer, useState } from 'react';
 import PropTypes from 'prop-types'
 import NumberButton from './NumberButton';
@@ -7,7 +7,7 @@ import useEffectPostMount from './useEffectPostMount';
 import shuffle from 'lodash.shuffle';
 
 
-function Game({options}) {
+function Game({options, playAgain}) {
   React.useEffect(() => {
     //runs when component mounted
     intervalId = setInterval(() => updateSeconds(), 1000);
@@ -25,7 +25,7 @@ function Game({options}) {
               setGameStatus('WON');
             }
             else{
-              setGameStatus("LOST");
+              setGameStatus('LOST');
             }
         }
     });
@@ -69,9 +69,13 @@ function Game({options}) {
                 isDisabled={isNumberSelected(index, selectedNumbers) || gameStatus !== 'PLAYING'}
               />
             )}    
-        </View> 
+        </View>
+        {gameStatus !== 'PLAYING' && (
+          <Button title='Play Again' onPress={playAgain}/>
+        )}
+        
         <Text>{remainingSeconds}</Text>
-      <StatusBar style="auto" />
+      <StatusBar style='auto' />
     </View>
   );
 }
@@ -93,8 +97,8 @@ const styles = StyleSheet.create({
   bottom:{
     flex:2,
     justifyContent: 'center',
-    flexWrap: "wrap",
-    flexDirection: "row",
+    flexWrap: 'wrap',
+    flexDirection: 'row',
   },
   numberBox:{
     borderColor: 'black',
